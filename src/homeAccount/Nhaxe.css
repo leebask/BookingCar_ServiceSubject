@@ -1,0 +1,23 @@
+.css-heg063-MuiTabs-flexContainer{
+    justify-content: center;
+    margin-top: 28px;
+}
+.css-ahj2mt-MuiTypography-root {
+    text-align: -webkit-center;
+}
+/* .mapboxgl-ctrl-attrib-inner{
+   display:none;
+} */ 
+
+h1 {
+    color: orangered;
+}
+
+h3 {
+    color: orange;
+    padding-bottom: 28px;
+}
+
+h5{
+    padding-top: 38px;
+}

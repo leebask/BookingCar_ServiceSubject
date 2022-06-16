@@ -1,0 +1,97 @@
+
+
+.header{
+    display: flex;
+    position: sticky;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    right: 0;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px;
+    padding-top: 15px;
+    height:40px;
+}
+
+.header__logoImg{
+    object-fit: contain;
+    flex: 1;
+    width: 90px;
+    margin-right: 100px;
+}
+.header__logoNation{
+    
+    height: 20px;
+    width: 40px;
+    margin-right: 10px;
+    
+}
+.header__links {
+    
+    display: flex;
+    gap: 40px;
+    margin-left: -300px;
+    margin-right:250px;
+  }
+  
+  .header__links > a {
+    text-decoration: none;
+    text-transform: uppercase;
+    color: rgb(0, 0, 0);
+    font-weight: 500;
+    font-size: 15px;
+  }
+  .header__links > a:hover{
+    color: rgb(238, 181, 24);
+  }
+  
+  .header__right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-right: -200px;
+  }
+  
+  .header__right > a {
+    text-decoration: none;
+    text-transform: uppercase;
+    color: black;
+    font-weight: 500;
+    font-size: 15px;
+    z-index: 0;
+    position: relative;
+  }
+  
+  .header__link--hidden {
+    visibility: hidden;
+  }
+  
+  .header__menu > .MuiSvgIcon-root {
+    position: relative;
+    z-index: 2;
+    cursor: pointer;
+  }
+
+  .header_imgtrans--hidden{
+      visibility: hidden;
+  }
+
+  .header__btnLogin{
+    color: #fff !important;
+    background-color: #1F66CF;
+    border-radius: 50%;
+    margin: 16;
+    padding: 7px;
+    text-decoration: none;
+    text-transform: uppercase;
+    
+    
+    
+  }
+  .header__btnLogin:hover{
+    opacity: 0.9;
+  }
+  .header__btnLogin:active{
+    opacity: 0.3;
+  }

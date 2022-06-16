@@ -1,0 +1,42 @@
+.menu{
+    position: fixed;
+    /* overflow:scroll; */
+    top:0;
+    bottom:0;
+    right:0;
+    padding-left: 20px;
+    padding-top: 70px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    
+    background-color: white;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    min-width: 280px;
+    animation: growDown 300ms ease-in-out forwards;
+    transform-origin: center;
+}
+.menu > a{
+  text-decoration: none;
+  text-transform: uppercase;
+  color: rgb(0, 0, 0);
+  font-weight: 500;
+  font-size: 15px;
+}
+.menu > a :hover{
+  opacity: 0.8;
+}
+
+@keyframes growDown {
+    0% {
+      transform: scaleY(0)
+    }
+    80% {
+      transform: scaleY(1.1)
+    }
+    100% {
+      transform: scaleY(1)
+    }
+  }

@@ -1,0 +1,151 @@
+.signup {
+    padding: 25px;
+    padding-top: 15px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 70px;
+  }
+  .signup__language {
+    display: flex;
+    gap: 5px;
+    align-items: flex-end;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 50px;
+    font-size: 15px;
+    transition: all 0.2s;
+  }  
+  .signup__nation{
+    display: flex;
+    gap: 5px;
+    align-items: flex-start;
+    flex-direction: column;
+    font-weight: 500;
+
+  }
+  .signup__nation > a{
+    text-decoration: none;
+    color: black;
+  }
+  .signup__nation > a:hover {
+      opacity: 0.8;
+  }
+  .signup__logolG{
+    height: 20px;
+    width: 46px;
+    padding-right: 10px;
+  }
+
+  .signup__logo{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 200px;
+  }
+
+  .signup__logo > img {
+    width: 234px;
+    margin-top: -200px;
+    border-radius: 4px;
+    height: 234px;
+  }
+
+  .signup__info {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-width: 330px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: -200px;
+    padding-top: 78px;
+  }
+  .signup__info > h1 {
+    color: #0B4057;
+    font-weight: 500;
+    font-size: 40px;
+    margin: 0px 100px 0px 100px;
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px solid #F1CE13;
+  }
+  .signup__form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .signup__form > label {
+    color: #5c5e62;
+    font-weight: 500;
+    font-size: 15px;
+    padding-left: 20px;
+  }
+
+  .signup__form > input {
+  margin-bottom: 30px;
+  background-color: #f4f4f4;
+  border: 1px solid #f4f4f4;
+  outline: none;
+  border-radius: 50px;
+  padding: 12px 20px;
+  color: #393c41;
+  font-weight: 600;
+}
+
+.signup__form > input:focus {
+  border: 1px solid #d6d6d7;
+  transition: all 0.2s;
+}
+
+.signup__divider {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .signup__divider > hr {
+    width: 40%;
+    height: 0;
+    opacity: 0.3;
+  }
+  
+  .signup__divider > span {
+    font-weight: 500;
+    color: #5c5e62;
+  }
+
+  .btnCreat{
+    background-color: #3e6ae1;
+    border: none;
+    padding: 12px 40px;
+    border-radius: 50px;
+    color: white;
+    text-transform: uppercase;
+    font-weight: bold;
+    cursor: pointer;
+    outline: none;
+    margin-bottom: 30px;
+    transition: all 0.4s;
+  }
+  .btnCreat:hover {
+    background-color: #3457b1;
+  }
+  .btnLogin{
+    background-color: transparent;
+    border: 3px solid #171a20;
+    width: 100%;
+    padding: 10px 40px;
+    border-radius: 50px;
+    text-transform: uppercase;
+    color: #171a20;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    outline: none;
+    margin-bottom: 24px;
+  }
+  .btnLogin:hover {
+    background-color: #171a20;
+    color: white;
+  }
