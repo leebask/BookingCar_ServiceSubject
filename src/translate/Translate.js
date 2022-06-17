@@ -11,6 +11,7 @@ const translationEn = {
     cartour: "Cartour",
     nhaxe: "car owner",
     contact: "Contact",
+    bookingonline:"Booking Online",
 
   
   }
@@ -24,6 +25,7 @@ const translationEn = {
     cartour: "Chuyến xe",
     nhaxe: "Nhà xe",
     contact: "Liên hệ",
+    bookingonline: "Đặt xe online"
 
   
   }

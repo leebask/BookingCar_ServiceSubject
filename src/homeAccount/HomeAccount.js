@@ -242,7 +242,8 @@ function HomeAccount({ isMenuOpen, setIsMenuOpen, }) {
         {cars.filter(car => car.maXe in DataTour&&(!SelectedDataRoute|| DataTour[car.maXe]?.noiDi===DataRoute[SelectedDataRoute]?.noiDi&&DataTour[car.maXe]?.noiDen===DataRoute[SelectedDataRoute]?.noiDen)).map(car => (
           <Cars
             key={car.maXe}
-            imgSrc="https://hyundaivn.com/library/module_new/hyundai-universe-40-giuong-g42-410_s1002.png"
+           
+           imgSrc={ car.soLuongGhe <28 ? "https://hyundaivn.com/library/module_new/hyundai-universe-40-giuong-g42-410_s1002.png" : "http://dulichviet.com.vn/images/2012/11/thue-xe-isuzu-samco-35-cho-di-long-ho-vinh-long_du-lich-viet.jpg" }
             maXe={car.maXe}
             bienSo={car.bienSo}
             loaiXe={car.loaiXe}

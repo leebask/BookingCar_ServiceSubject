@@ -30,7 +30,11 @@ import { TextareaAutosize } from '@mui/material'
 //form
 
 import TextField from '@mui/material/TextField';
+import { selectUser } from '../features/userSlice';
+import { useSelector } from 'react-redux'
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
@@ -48,7 +52,9 @@ const style = {
   p: 4,
 };
 
-function Cars({ imgSrc,  maXe, bienSo,loaiXe,soLuongGhe, gia,tour }) {
+function Cars({ imgSrc, maXe, bienSo, loaiXe, soLuongGhe, gia, tour }) {
+
+  const user = useSelector(selectUser)
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -73,6 +79,9 @@ function Cars({ imgSrc,  maXe, bienSo,loaiXe,soLuongGhe, gia,tour }) {
   const allStepsCompleted = () => {
     return completedSteps() === totalSteps();
   };
+  // const allStepsCompletedHandleticket = () => {
+  //  return completedSteps() === totalSteps() ? toast.success("đặt thành công"): ""
+  // }
 
   const handleNext = () => {
     const newActiveStep =
@@ -97,12 +106,42 @@ function Cars({ imgSrc,  maXe, bienSo,loaiXe,soLuongGhe, gia,tour }) {
     newCompleted[activeStep] = true;
     setCompleted(newCompleted);
     handleNext();
+    
+    
   };
 
   const handleReset = () => {
     setActiveStep(0);
     setCompleted({});
 
+  };
+
+  //ghế
+  const getSoLuongGheRender = soLuongGhe => {
+    let content = [];
+    let j =1;
+    for (let i= 1; i < soLuongGhe; i=i+3) {
+      // const item = animals[i];
+      
+      content.push(<li class="row row--1">
+      <ol class="seats" type="A">
+        <li class="seat">
+          <input type="checkbox" id={`${j}A`} onClick={() =>console.log("log choose ticket")}/>
+          <label for={`${j}A`}>{j}A</label>
+        </li>
+        <li class="seat">
+          <input type="checkbox" id={`${j}B`} onClick={() =>console.log("log choose ticket")}/>
+          <label for={`${j}B`}>{j}B</label>
+        </li>
+        <li class="seat">
+          <input type="checkbox" id={`${j}C`} onClick={() =>console.log("log choose ticket")} />
+          <label for={`${j}C`}>{j}C</label>
+        </li>
+      </ol>
+    </li>)
+    j++
+    }
+    return content;
   };
 
   //date 
@@ -112,7 +151,8 @@ function Cars({ imgSrc,  maXe, bienSo,loaiXe,soLuongGhe, gia,tour }) {
   return (
     <div className="cars">
       <div>
-        <Modal
+        <Modal 
+          style={{overflow: "scroll"}}
           open={open}
           onClose={handleClose}
           aria-labelledby="modal-modal-title"
@@ -134,7 +174,7 @@ function Cars({ imgSrc,  maXe, bienSo,loaiXe,soLuongGhe, gia,tour }) {
                   ))}
                 </Stepper>
                 <div>
-                  {allStepsCompleted() ? (
+                  {allStepsCompleted() ? ( 
                     <React.Fragment>
                       <Typography sx={{ mt: 2, mb: 1 }}>
                         Đã hoàn thành các bước.Sẽ có nhân viên liên hẹ cho bạn!
@@ -177,7 +217,11 @@ function Cars({ imgSrc,  maXe, bienSo,loaiXe,soLuongGhe, gia,tour }) {
 
                                 </div>
                                 <ol class="cabin fuselage">
-                                  <li class="row row--1">
+                                  {/* test từ đây */}
+                                 {getSoLuongGheRender(soLuongGhe)} 
+                                  
+                                  {/* test trên */}
+                                  {/* <li class="row row--1">
                                     <ol class="seats" type="A">
                                       <li class="seat">
                                         <input type="checkbox" id="1A" />
@@ -191,9 +235,6 @@ function Cars({ imgSrc,  maXe, bienSo,loaiXe,soLuongGhe, gia,tour }) {
                                         <input type="checkbox" id="1C" />
                                         <label for="1C">1C</label>
                                       </li>
-
-
-
                                     </ol>
                                   </li>
                                   <li class="row row--2">
@@ -229,14 +270,7 @@ function Cars({ imgSrc,  maXe, bienSo,loaiXe,soLuongGhe, gia,tour }) {
                                       </li>
 
                                     </ol>
-                                  </li>
-
-
-
-
-
-
-
+                                  </li> */}
                                 </ol>
                                 <div class="exit exit--back fuselage">
 
@@ -255,19 +289,31 @@ function Cars({ imgSrc,  maXe, bienSo,loaiXe,soLuongGhe, gia,tour }) {
                               defaultValue="female"
                               name="radio-buttons-group"
                             >
-                              <FormControlLabel value="female" control={<Radio />} label={
-                                <><div style={{ fontSize: 'large' }}>Bến Xe Miền Đông</div>
-                                  <span style={{ fontSize: 'small', opacity: 0.8 }}>
-                                    <LocationOnIcon />
-                                    số 292 đường Đinh Bộ Lĩnh, Phường 26, Quận Bình Thạnh, thành phố Hồ Chí Minh
-                                  </span>
-                                </>
-                              } />
+                              {
+                                tour.noiDi == "SaiGon" ? (
+                                  <FormControlLabel value="female" control={<Radio />} label={
+                                    <><div style={{ fontSize: 'large' }}>Bến Xe Miền Đông</div>
+                                      <span style={{ fontSize: 'small', opacity: 0.8 }}>
+                                        <LocationOnIcon />
+                                        số 292 đường Đinh Bộ Lĩnh, Phường 26, Quận Bình Thạnh, thành phố Hồ Chí Minh
+                                      </span>
+                                    </>
+                                  } />
+                                ) : (<FormControlLabel value="female" control={<Radio />} label={
+                                  <><div style={{ fontSize: 'large' }}>Bến Xe Đắk Lắk</div>
+                                    <span style={{ fontSize: 'small', opacity: 0.8 }}>
+                                      <LocationOnIcon />
+                                      Km 4, Đường Nguyễn Chí Thanh, Phường Tân An, Buôn Ma Thuột, Đắk Lắk
+                                    </span>
+                                  </>
+                                } />)
+                              }
+
                               <FormControlLabel value="male" control={<Radio />} label={
-                                <><div style={{ fontSize: 'large' }}>Bến Xe An Sương</div>
+                                <><div style={{ fontSize: 'large' }}>Nhà xe liên hệ để đón</div>
                                   <span style={{ fontSize: 'small', opacity: 0.8 }}>
                                     <LocationOnIcon />
-                                    QL22, Bà Điểm, Hóc Môn, Thành phố Hồ Chí Minh
+                                    Địa điểm người đặt trao đổi
                                   </span>
                                 </>
                               } />
@@ -291,13 +337,13 @@ function Cars({ imgSrc,  maXe, bienSo,loaiXe,soLuongGhe, gia,tour }) {
                                 // error
                                 id="outlined-error"
                                 label="Họ tên"
-                                defaultValue=""
+                                defaultValue={user.displayName}
                               />
                               <TextField
                                 // error
                                 id="outlined-error-helper-text"
                                 label="Email"
-                                defaultValue=""
+                                defaultValue={user.email}
                               // helperText="Incorrect entry."
                               />
 
@@ -362,7 +408,7 @@ function Cars({ imgSrc,  maXe, bienSo,loaiXe,soLuongGhe, gia,tour }) {
                           ) : (
                             <Button onClick={handleComplete}>
                               {completedSteps() === totalSteps() - 1
-                                ? 'Finish'
+                                ? 'Finish' 
                                 : 'Next'}
                             </Button>
                           ))}
@@ -386,8 +432,8 @@ function Cars({ imgSrc,  maXe, bienSo,loaiXe,soLuongGhe, gia,tour }) {
           <ButtonPrimary onClick={handleOpen} name='Đặt vé' />
           {/* <button className="cars__choose">Chọn tuyến</button> */}
           <div className="cars__choose" >
-           {/* Sài Gòn-Đắk Lắk */}
-           {tour?.noiDi} - {tour?.noiDen}
+            {/* Sài Gòn-Đắk Lắk */}
+            {tour?.noiDi} - {tour?.noiDen}
             {/* <option value="saab">Đắk Lắk-Sài Gòn</option> */}
           </div>
 
@@ -401,6 +447,7 @@ function Cars({ imgSrc,  maXe, bienSo,loaiXe,soLuongGhe, gia,tour }) {
 
         </p>
       </div>
+      <ToastContainer />
     </div>
   )
 }
