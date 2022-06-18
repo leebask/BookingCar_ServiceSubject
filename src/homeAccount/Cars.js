@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import ButtonPrimary from '../login/ButtonPrimary'
 import ButtonSecondary from '../login/ButtonSecondary'
 import './Cars.css'
@@ -31,10 +31,11 @@ import { TextareaAutosize } from '@mui/material'
 
 import TextField from '@mui/material/TextField';
 import { selectUser } from '../features/userSlice';
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { setticket } from '../features/ticketSlice';
 
 
 
@@ -77,6 +78,12 @@ function Cars({ imgSrc, maXe, bienSo, loaiXe, soLuongGhe, gia, tour }) {
   };
 
   const allStepsCompleted = () => {
+    if( completedSteps() === totalSteps()){
+      // useEffect(() => 
+      {
+        testconsolelog()
+      }
+    }
     return completedSteps() === totalSteps();
   };
   // const allStepsCompletedHandleticket = () => {
@@ -106,8 +113,6 @@ function Cars({ imgSrc, maXe, bienSo, loaiXe, soLuongGhe, gia, tour }) {
     newCompleted[activeStep] = true;
     setCompleted(newCompleted);
     handleNext();
-    
-    
   };
 
   const handleReset = () => {
@@ -117,42 +122,145 @@ function Cars({ imgSrc, maXe, bienSo, loaiXe, soLuongGhe, gia, tour }) {
   };
 
   //ghế
+
+  const [layMaGhe, setlayMaGhe] = React.useState([]);
+
+  const addMaGhe = (e) => {
+
+    const a = DataTicket.map((ticket)=>ticket.maGhe)
+    // console.log(a.filter(magheticket =>magheticket == e.target.id ).length >0 )
+    if(!(a.filter(magheticket =>magheticket == e.target.id ).length >0 )) {
+      setlayMaGhe([
+        ...layMaGhe, e.target.id
+      ])
+    }
+    else {
+      toast.warn("Ghế đã được đặt! Mời chọn ghế khác.")
+    }
+   
+  }
+  console.log(layMaGhe.join(','))
+  // useEffect(() => {
+  //   addMaGhe()
+  // },[])
+
+
   const getSoLuongGheRender = soLuongGhe => {
     let content = [];
-    let j =1;
-    for (let i= 1; i < soLuongGhe; i=i+3) {
+    let j = 1;
+    for (let i = 1; i < soLuongGhe; i = i + 3) {
       // const item = animals[i];
-      
+
       content.push(<li class="row row--1">
-      <ol class="seats" type="A">
-        <li class="seat">
-          <input type="checkbox" id={`${j}A`} onClick={() =>console.log("log choose ticket")}/>
-          <label for={`${j}A`}>{j}A</label>
-        </li>
-        <li class="seat">
-          <input type="checkbox" id={`${j}B`} onClick={() =>console.log("log choose ticket")}/>
-          <label for={`${j}B`}>{j}B</label>
-        </li>
-        <li class="seat">
-          <input type="checkbox" id={`${j}C`} onClick={() =>console.log("log choose ticket")} />
-          <label for={`${j}C`}>{j}C</label>
-        </li>
-      </ol>
-    </li>)
-    j++
+        <ol class="seats" type="A">
+          <li class="seat">
+            <input type="checkbox" id={`${j}A`} onClick={addMaGhe} />
+            <label for={`${j}A`}>{j}A</label>
+          </li>
+          <li class="seat">
+            <input type="checkbox" id={`${j}B`} onClick={addMaGhe} />
+            <label for={`${j}B`}>{j}B</label>
+          </li>
+          <li class="seat">
+            <input type="checkbox" id={`${j}C`} onClick={addMaGhe} />
+            <label for={`${j}C`}>{j}C</label>
+          </li>
+        </ol>
+      </li>)
+      j++
     }
     return content;
   };
-
   //date 
   const current = new Date();
   const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
+  // post ticket 
+
+  const [postId, setPostId] = React.useState(null);
+  const [phoneNumber, setPhoneNumber] = React.useState(null);
+
+
+  const PostTicket =() => {
+   
+    // POST request using fetch inside useEffect React hook
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        
+        maCX: tour.maCX,
+        tenKH: user.displayName,
+        email: user.email,
+        sdt: phoneNumber,
+        ngayDat: date,
+        maGhe: layMaGhe.join(','),
+        trangThai: 1,
+        ghiChu: "gọi cho tôi"
+      })
+    };
+    fetch('https://api-xe-khach.herokuapp.com/ticket',requestOptions)
+      .then(response => response.json())
+      .then(data => { 
+        setlayMaGhe([]) 
+        setPhoneNumber(null)
+        toast.success("Đặt thành công!")
+        setActiveStep(0);
+        setCompleted({});
+      });
+    
+
+    // empty dependency array means this effect will only run once (like componentDidMount in classes)
+  }
+
+  // Get ticket API
+  const [DataTicket, setDataTicket] = React.useState(null);
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState(null);
+  const dispatch = useDispatch()
+  //get Ticket
+  useEffect(() => {
+    const getDataTicket = async () => {
+      try {
+
+        const response = await fetch(
+          `https://api-xe-khach.herokuapp.com/ticket`);
+        console.log('response', response)
+
+        if (!response.ok) {
+          console.log('not ok')
+          throw new Error(
+            `This is an HTTP error: The status is ${response.status}`
+          );
+        }
+        console.log('ok')
+
+        let actualDataTicket = await response.json();
+
+        console.log("DataTicketa1 " + actualDataTicket)
+        dispatch(setticket(actualDataTicket))
+        setDataTicket(actualDataTicket);
+        setError(null);
+      } catch (err) {
+        setError(err.message);
+        setDataTicket(null);
+      } finally {
+        setLoading(false);
+      }
+    }
+    getDataTicket()
+  }, [])
+
+
+ const testconsolelog = ()=> {
+  console.log("vé đã đặt")
+ }
 
   return (
     <div className="cars">
+     
       <div>
-        <Modal 
-          style={{overflow: "scroll"}}
+        <Modal
+          style={{ overflow: "scroll" }}
           open={open}
           onClose={handleClose}
           aria-labelledby="modal-modal-title"
@@ -174,14 +282,16 @@ function Cars({ imgSrc, maXe, bienSo, loaiXe, soLuongGhe, gia, tour }) {
                   ))}
                 </Stepper>
                 <div>
-                  {allStepsCompleted() ? ( 
+                  {allStepsCompleted() ? (
                     <React.Fragment>
                       <Typography sx={{ mt: 2, mb: 1 }}>
-                        Đã hoàn thành các bước.Sẽ có nhân viên liên hẹ cho bạn!
+                        Xác nhận đặt vé!
                       </Typography>
                       <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
                         <Box sx={{ flex: '1 1 auto' }} />
                         <Button onClick={handleReset}>Reset</Button>
+                        <Button  onClick={PostTicket}>Đặt vé</Button>
+
                       </Box>
                     </React.Fragment>
                   ) : (
@@ -208,6 +318,7 @@ function Cars({ imgSrc, maXe, bienSo, loaiXe, soLuongGhe, gia, tour }) {
                                 <TimelineContent>{tour?.noiDen}</TimelineContent>
                               </TimelineItem>
                             </Timeline>
+                            <div>Tổng giá:{tour.gia*layMaGhe.length} VNĐ</div>
                           </div>
                           <div className="step1_desc">
                             <div>
@@ -218,8 +329,8 @@ function Cars({ imgSrc, maXe, bienSo, loaiXe, soLuongGhe, gia, tour }) {
                                 </div>
                                 <ol class="cabin fuselage">
                                   {/* test từ đây */}
-                                 {getSoLuongGheRender(soLuongGhe)} 
-                                  
+                                  {getSoLuongGheRender(soLuongGhe)}
+
                                   {/* test trên */}
                                   {/* <li class="row row--1">
                                     <ol class="seats" type="A">
@@ -354,6 +465,7 @@ function Cars({ imgSrc, maXe, bienSo, loaiXe, soLuongGhe, gia, tour }) {
                                 id="outlined-error"
                                 label="Số điện thoại"
                                 defaultValue=""
+                                onChange={e=>setPhoneNumber(e.target.value)}
                               />
                               <TextField
                                 // error
@@ -408,7 +520,7 @@ function Cars({ imgSrc, maXe, bienSo, loaiXe, soLuongGhe, gia, tour }) {
                           ) : (
                             <Button onClick={handleComplete}>
                               {completedSteps() === totalSteps() - 1
-                                ? 'Finish' 
+                                ? 'Finish'
                                 : 'Next'}
                             </Button>
                           ))}
