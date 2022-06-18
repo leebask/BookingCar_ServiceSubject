@@ -78,12 +78,7 @@ function Cars({ imgSrc, maXe, bienSo, loaiXe, soLuongGhe, gia, tour }) {
   };
 
   const allStepsCompleted = () => {
-    if( completedSteps() === totalSteps()){
-      // useEffect(() => 
-      {
-        testconsolelog()
-      }
-    }
+    
     return completedSteps() === totalSteps();
   };
   // const allStepsCompletedHandleticket = () => {
@@ -178,6 +173,10 @@ function Cars({ imgSrc, maXe, bienSo, loaiXe, soLuongGhe, gia, tour }) {
 
   const [postId, setPostId] = React.useState(null);
   const [phoneNumber, setPhoneNumber] = React.useState(null);
+  const [ghiChu, setGhiChu] = React.useState();
+  const [chonDiaDiem, setChonDiaDiem] = React.useState();
+
+
 
 
   const PostTicket =() => {
@@ -195,7 +194,7 @@ function Cars({ imgSrc, maXe, bienSo, loaiXe, soLuongGhe, gia, tour }) {
         ngayDat: date,
         maGhe: layMaGhe.join(','),
         trangThai: 1,
-        ghiChu: "gọi cho tôi"
+        ghiChu: "Đón tại"+" "+chonDiaDiem +", " + " Ghi chú"+" "+ ghiChu
       })
     };
     fetch('https://api-xe-khach.herokuapp.com/ticket',requestOptions)
@@ -249,11 +248,6 @@ function Cars({ imgSrc, maXe, bienSo, loaiXe, soLuongGhe, gia, tour }) {
     }
     getDataTicket()
   }, [])
-
-
- const testconsolelog = ()=> {
-  console.log("vé đã đặt")
- }
 
   return (
     <div className="cars">
@@ -402,7 +396,7 @@ function Cars({ imgSrc, maXe, bienSo, loaiXe, soLuongGhe, gia, tour }) {
                             >
                               {
                                 tour.noiDi == "SaiGon" ? (
-                                  <FormControlLabel value="female" control={<Radio />} label={
+                                  <FormControlLabel onClick={(e)=>setChonDiaDiem(e.target.value)} value="Bến Xe Miền Đông" control={<Radio />} label={
                                     <><div style={{ fontSize: 'large' }}>Bến Xe Miền Đông</div>
                                       <span style={{ fontSize: 'small', opacity: 0.8 }}>
                                         <LocationOnIcon />
@@ -410,7 +404,7 @@ function Cars({ imgSrc, maXe, bienSo, loaiXe, soLuongGhe, gia, tour }) {
                                       </span>
                                     </>
                                   } />
-                                ) : (<FormControlLabel value="female" control={<Radio />} label={
+                                ) : (<FormControlLabel onClick={(e)=>setChonDiaDiem(e.target.value)} value="Bến Xe Đắk Lắk" control={<Radio />} label={
                                   <><div style={{ fontSize: 'large' }}>Bến Xe Đắk Lắk</div>
                                     <span style={{ fontSize: 'small', opacity: 0.8 }}>
                                       <LocationOnIcon />
@@ -420,7 +414,7 @@ function Cars({ imgSrc, maXe, bienSo, loaiXe, soLuongGhe, gia, tour }) {
                                 } />)
                               }
 
-                              <FormControlLabel value="male" control={<Radio />} label={
+                              <FormControlLabel onClick={(e)=>setChonDiaDiem(e.target.value)} value="Nhà xe liên hệ để đón" control={<Radio />} label={
                                 <><div style={{ fontSize: 'large' }}>Nhà xe liên hệ để đón</div>
                                   <span style={{ fontSize: 'small', opacity: 0.8 }}>
                                     <LocationOnIcon />
@@ -486,6 +480,7 @@ function Cars({ imgSrc, maXe, bienSo, loaiXe, soLuongGhe, gia, tour }) {
                                 placeholder="Ghi chú..."
                                 defaultValue=""
                                 style={{ width: 500 }}
+                                onChange={(e)=>{setGhiChu(e.target.value)}}
                               // helperText="Incorrect entry."
                               />
 
