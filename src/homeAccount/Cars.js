@@ -122,7 +122,8 @@ function Cars({ imgSrc, maXe, bienSo, loaiXe, soLuongGhe, gia, tour }) {
 
   const addMaGhe = (e) => {
 
-    const a = DataTicket.map((ticket)=>ticket.maGhe)
+    const a = DataTicket.map((ticket)=> ticket.maCX == tour.maCX ?ticket.maGhe:"")
+    console.log(a)
     // console.log(a.filter(magheticket =>magheticket == e.target.id ).length >0 )
     if(!(a.filter(magheticket =>magheticket == e.target.id ).length >0 )) {
       setlayMaGhe([
@@ -205,6 +206,8 @@ function Cars({ imgSrc, maXe, bienSo, loaiXe, soLuongGhe, gia, tour }) {
         toast.success("Đặt thành công!")
         setActiveStep(0);
         setCompleted({});
+        setGhiChu()
+        setChonDiaDiem()
       });
     
 
