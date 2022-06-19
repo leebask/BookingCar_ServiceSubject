@@ -113,7 +113,7 @@ function SignUp() {
           <button className='btnLogin'>Đăng nhập</button>
         </Link>
       </div>
-      <ToastContainer />
+     
     </div>
   )
 }

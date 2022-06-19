@@ -77,6 +77,7 @@
   transition: all 0.2s ease-in-out;
   outline: none;
   text-align: -webkit-center;
+  
 }
 
 .cars__choose:hover {
@@ -192,6 +193,10 @@ ol {
 .seat input[type=checkbox] {
   position: absolute;
   opacity: 0;
+}
+
+.seat input[type=checkbox].unavailable+label {
+  background-color: #808080;
 }
 
 .seat input[type=checkbox]:checked+label {

@@ -85,7 +85,7 @@ function ConTact({ isMenuOpen, setIsMenuOpen }) {
                     </div>
                 </div>
                 <Footer />
-                <ToastContainer />
+                
             </div>
         </>
     )

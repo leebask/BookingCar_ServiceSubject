@@ -130,7 +130,7 @@ const test = ()=>{
           {/* loginAndUpdate */}
         </Box>
         <Footer />
-        <ToastContainer />
+        
       </div>
     </>
   )

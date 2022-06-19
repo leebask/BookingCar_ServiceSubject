@@ -14,6 +14,7 @@ import ConTact from './homeAccount/ConTact';
 import Account from './homeAccount/Account';
 import CarTour from './homeAccount/carTour/CarTour';
 import Footer from './footer/Footer';
+import { ToastContainer } from 'react-toastify';
 
 
 
@@ -77,6 +78,7 @@ function App() {
           <Route path="/cartour" element={
             <CarTour />} />
         </Routes>
+        <ToastContainer />
       </div>
     </Router>
   );

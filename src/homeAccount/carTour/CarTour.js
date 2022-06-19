@@ -160,9 +160,9 @@ function CarTour() {
                         <Typography id="modal-modal-title" variant="h6" component="h2">
                             {namePlace}
                         </Typography>
-                        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        {/* <Typography id="modal-modal-description" sx={{ mt: 2 }}> */}
                             <MapboxDirection />
-                        </Typography>
+                        {/* </Typography> */}
                     </Box>
                 </Modal>
             </div>

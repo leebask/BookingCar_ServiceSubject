@@ -37,7 +37,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { setticket } from '../features/ticketSlice';
 
-
+const clsx = (...classNames)=> classNames.filter(c => !!c).join(' ')
 
 const steps = ['Chọn chỗ', 'Điểm đón', 'Điền thông tin'];
 const style = {
@@ -53,13 +53,18 @@ const style = {
   p: 4,
 };
 
-function Cars({ imgSrc, maXe, bienSo, loaiXe, soLuongGhe, gia, tour }) {
+function Cars({ imgSrc, maXe, bienSo, loaiXe, soLuongGhe, gia, tour ,DataTicket}) {
 
   const user = useSelector(selectUser)
 
   const [open, setOpen] = React.useState(false);
+  const [layMaGhe, setlayMaGhe] = React.useState([]);
+
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setlayMaGhe([]);
+    setOpen(false);
+  }
 
   //modal custom
   const [activeStep, setActiveStep] = React.useState(0);
@@ -118,24 +123,25 @@ function Cars({ imgSrc, maXe, bienSo, loaiXe, soLuongGhe, gia, tour }) {
 
   //ghế
 
-  const [layMaGhe, setlayMaGhe] = React.useState([]);
-
   const addMaGhe = (e) => {
-
-    const a = DataTicket.map((ticket)=> ticket.maCX == tour.maCX ?ticket.maGhe:"")
-    console.log(a)
+    e.stopPropagation();
+    e.preventDefault();
+    const a = DataTicket.filter((ticket)=> ticket.maCX == tour.maCX)
+    console.log(a.map(t=>t.maGhe))
     // console.log(a.filter(magheticket =>magheticket == e.target.id ).length >0 )
-    if(!(a.filter(magheticket =>magheticket == e.target.id ).length >0 )) {
+    if(a.filter((ticket)=>ticket.maGhe.split(',').map(g=>g.trim()).includes(e.target.id)).length<=0) {
       setlayMaGhe([
         ...layMaGhe, e.target.id
       ])
     }
     else {
+  
       toast.warn("Ghế đã được đặt! Mời chọn ghế khác.")
     }
-   
+    console.log([
+      ...layMaGhe, e.target.id
+    ])
   }
-  console.log(layMaGhe.join(','))
   // useEffect(() => {
   //   addMaGhe()
   // },[])
@@ -144,21 +150,21 @@ function Cars({ imgSrc, maXe, bienSo, loaiXe, soLuongGhe, gia, tour }) {
   const getSoLuongGheRender = soLuongGhe => {
     let content = [];
     let j = 1;
-    for (let i = 1; i < soLuongGhe; i = i + 3) {
+    for (let i = 0; i < soLuongGhe; i = i + 3) {
       // const item = animals[i];
 
-      content.push(<li class="row row--1">
-        <ol class="seats" type="A">
-          <li class="seat">
-            <input type="checkbox" id={`${j}A`} onClick={addMaGhe} />
+      content.push(<li className="row row--1">
+        <ol className="seats" type="A">
+          <li className="seat">
+            <input className={clsx(DataTicket.some(t=>t.maCX == tour.maCX&&t.maGhe.split(',').map(g=>g.trim()).includes(`${j}A`))&&'unavailable')} type="checkbox" id={`${j}A`} onClick={addMaGhe} />
             <label for={`${j}A`}>{j}A</label>
           </li>
-          <li class="seat">
-            <input type="checkbox" id={`${j}B`} onClick={addMaGhe} />
+          <li className="seat">
+            <input className={clsx(DataTicket.some(t=>t.maCX == tour.maCX&&t.maGhe.split(',').map(g=>g.trim()).includes(`${j}B`))&&'unavailable')} type="checkbox" id={`${j}B`} onClick={addMaGhe} />
             <label for={`${j}B`}>{j}B</label>
           </li>
-          <li class="seat">
-            <input type="checkbox" id={`${j}C`} onClick={addMaGhe} />
+          <li className="seat">
+            <input className={clsx(DataTicket.some(t=>t.maCX == tour.maCX&&t.maGhe.split(',').map(g=>g.trim()).includes(`${j}C`))&&'unavailable')} type="checkbox" id={`${j}C`} onClick={addMaGhe} />
             <label for={`${j}C`}>{j}C</label>
           </li>
         </ol>
@@ -214,44 +220,7 @@ function Cars({ imgSrc, maXe, bienSo, loaiXe, soLuongGhe, gia, tour }) {
     // empty dependency array means this effect will only run once (like componentDidMount in classes)
   }
 
-  // Get ticket API
-  const [DataTicket, setDataTicket] = React.useState(null);
-  const [loading, setLoading] = React.useState(true);
-  const [error, setError] = React.useState(null);
-  const dispatch = useDispatch()
-  //get Ticket
-  useEffect(() => {
-    const getDataTicket = async () => {
-      try {
-
-        const response = await fetch(
-          `https://api-xe-khach.herokuapp.com/ticket`);
-        console.log('response', response)
-
-        if (!response.ok) {
-          console.log('not ok')
-          throw new Error(
-            `This is an HTTP error: The status is ${response.status}`
-          );
-        }
-        console.log('ok')
-
-        let actualDataTicket = await response.json();
-
-        console.log("DataTicketa1 " + actualDataTicket)
-        dispatch(setticket(actualDataTicket))
-        setDataTicket(actualDataTicket);
-        setError(null);
-      } catch (err) {
-        setError(err.message);
-        setDataTicket(null);
-      } finally {
-        setLoading(false);
-      }
-    }
-    getDataTicket()
-  }, [])
-
+  
   return (
     <div className="cars">
      
@@ -319,60 +288,60 @@ function Cars({ imgSrc, maXe, bienSo, loaiXe, soLuongGhe, gia, tour }) {
                           </div>
                           <div className="step1_desc">
                             <div>
-                              <div class="plane">
+                              <div className="plane">
 
-                                <div class="exit exit--front fuselage">
+                                <div className="exit exit--front fuselage">
 
                                 </div>
-                                <ol class="cabin fuselage">
+                                <ol className="cabin fuselage">
                                   {/* test từ đây */}
                                   {getSoLuongGheRender(soLuongGhe)}
 
                                   {/* test trên */}
-                                  {/* <li class="row row--1">
-                                    <ol class="seats" type="A">
-                                      <li class="seat">
+                                  {/* <li className="row row--1">
+                                    <ol className="seats" type="A">
+                                      <li className="seat">
                                         <input type="checkbox" id="1A" />
                                         <label for="1A">1A</label>
                                       </li>
-                                      <li class="seat">
+                                      <li className="seat">
                                         <input type="checkbox" id="1B" />
                                         <label for="1B">1B</label>
                                       </li>
-                                      <li class="seat">
+                                      <li className="seat">
                                         <input type="checkbox" id="1C" />
                                         <label for="1C">1C</label>
                                       </li>
                                     </ol>
                                   </li>
-                                  <li class="row row--2">
-                                    <ol class="seats" type="A">
-                                      <li class="seat">
+                                  <li className="row row--2">
+                                    <ol className="seats" type="A">
+                                      <li className="seat">
                                         <input type="checkbox" id="2A" />
                                         <label for="2A">2A</label>
                                       </li>
-                                      <li class="seat">
+                                      <li className="seat">
                                         <input type="checkbox" id="2B" />
                                         <label for="2B">2B</label>
                                       </li>
-                                      <li class="seat">
+                                      <li className="seat">
                                         <input type="checkbox" id="2C" />
                                         <label for="2C">2C</label>
                                       </li>
 
                                     </ol>
                                   </li>
-                                  <li class="row row--3">
-                                    <ol class="seats" type="A">
-                                      <li class="seat">
+                                  <li className="row row--3">
+                                    <ol className="seats" type="A">
+                                      <li className="seat">
                                         <input type="checkbox" id="3A" />
                                         <label for="3A">3A</label>
                                       </li>
-                                      <li class="seat">
+                                      <li className="seat">
                                         <input type="checkbox" id="3B" />
                                         <label for="3B">3B</label>
                                       </li>
-                                      <li class="seat">
+                                      <li className="seat">
                                         <input type="checkbox" id="3C" />
                                         <label for="3C">3C</label>
                                       </li>
@@ -380,7 +349,7 @@ function Cars({ imgSrc, maXe, bienSo, loaiXe, soLuongGhe, gia, tour }) {
                                     </ol>
                                   </li> */}
                                 </ol>
-                                <div class="exit exit--back fuselage">
+                                <div className="exit exit--back fuselage">
 
                                 </div>
                               </div>
@@ -557,7 +526,7 @@ function Cars({ imgSrc, maXe, bienSo, loaiXe, soLuongGhe, gia, tour }) {
 
         </p>
       </div>
-      <ToastContainer />
+      
     </div>
   )
 }
