@@ -125,7 +125,7 @@ function CarTour() {
                                 Sài gòn - Đắk Lắk
                             </Typography>
                             <Typography variant="body2" color="text.secondary">
-                                Từ 300.000 VND
+                                Từ 100.000 VND
                             </Typography>
                            
                         </CardContent>
@@ -145,7 +145,7 @@ function CarTour() {
                                 Đắk Lắk - Sài gòn
                             </Typography>
                             <Typography variant="body2" color="text.secondary">
-                                Từ 250.000 VND
+                                Từ 100.000 VND
                             </Typography>
                         </CardContent>
                     </CardActionArea>
